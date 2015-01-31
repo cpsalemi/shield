@@ -1,0 +1,23 @@
+#/control/execute vis2.mac
+
+/CRY/input returnNeutrons 1
+/CRY/input returnProtons 1
+/CRY/input returnGammas 1
+/CRY/input returnPions 1
+/CRY/input returnKaons 1
+/CRY/input date 7-1-2012
+/CRY/input latitude 90.0
+/CRY/input altitude 0
+/CRY/input subboxLength 10
+/CRY/update
+
+/control/verbose 0
+/run/verbose 0
+/run/printProgress -1
+/tracking/verbose 0
+/event/verbose 0
+/process/verbose 0
+
+/analysis/setFileName testHistograms
+
+/run/beamOn 105
