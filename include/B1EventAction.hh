@@ -63,6 +63,7 @@ class B1EventAction : public G4UserEventAction
 	G4int fOScEdepHCID;
 	G4int fIScEdepHCID;
 	G4int fWorldEdepHCID;
+	G4int fMid1ScEdepHCID;
 	std::list < G4double > partNumbers;
 	G4double initNeutronEnergy;
 	//std::string particleType;

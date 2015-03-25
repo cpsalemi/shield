@@ -57,7 +57,8 @@ B1EventAction::B1EventAction()
   fGeEdepHCID(-1), //why? where?
   fOScEdepHCID(-1),
   fIScEdepHCID(-1),
-  fWorldEdepHCID(-1)
+  fWorldEdepHCID(-1),
+  fMid1ScEdepHCID(-1)
 {
   partNumbers.clear();
 } 
@@ -129,11 +130,15 @@ void B1EventAction::EndOfEventAction(const G4Event* event) //need event object n
 	if (fWorldEdepHCID == -1){
 		fWorldEdepHCID = G4SDManager::GetSDMpointer()->GetCollectionID("World/WorldEdep");
 	}
+	if (fMid1ScEdepHCID == -1){
+		fMid1ScEdepHCID = G4SDManager::GetSDMpointer()->GetCollectionID("mid1Scint/Mid1Edep");
+
 	//get sum values from hits collection
 	G4double geEdep = GetSum(GetHitsCollection(fGeEdepHCID, event));
 	G4double inScEdep = GetSum(GetHitsCollection(fIScEdepHCID, event));
 	G4double outScEdep = GetSum(GetHitsCollection(fOScEdepHCID, event));
 	G4double worldEdep = GetSum(GetHitsCollection(fWorldEdepHCID, event));
+	G4double mid1ScEdep = GetSum(GetHitsCollection(fMid1ScEdepHCID, event));
 	//get Analysis Manager
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	//fill histograms!
@@ -147,7 +152,10 @@ void B1EventAction::EndOfEventAction(const G4Event* event) //need event object n
 	if((inScEdep < 2.*MeV) && (outScEdep < 2.*MeV)){
 		analysisManager->FillH1(5, geEdep);
 		uncaught=1;
-	}
+	}//G-IO
+	if((inScEdep < 2.*MeV) && (outScEdep < 2.*MeV) && (mid1ScEdep < 2.*MeV)){
+		analysisManager->FillH1(67, geEdep);
+	}//G-IOM
 	if(outScEdep < 2*MeV){
 		analysisManager->FillH1(6, geEdep);
 	}
@@ -163,7 +171,10 @@ void B1EventAction::EndOfEventAction(const G4Event* event) //need event object n
 	analysisManager->FillH1(12, worldEdep);
 	if((inScEdep < 2*MeV) && (outScEdep < 2*MeV) && (geEdep > 0.05*MeV)){
 		analysisManager->FillH1(13, geEdep);
-	}
+	}//bigG-IO
+	if((inScEdep < 2*MeV) && (outScEdep < 2*MeV) && (mid1ScEdep < 2*MeV) && (geEdep > 0.05*MeV)){
+		analysisManager->FillH1(68, geEdep);
+	}//bigG-IOM
 	if(outScEdep < 2*MeV && geEdep > 0.05*MeV){
 		analysisManager->FillH1(14, geEdep);
 	}
@@ -200,10 +211,13 @@ void B1EventAction::EndOfEventAction(const G4Event* event) //need event object n
 		  analysisManager->FillH1(19, geEdep);
 		  analysisManager->FillH1(17, .5);
 			if(uncaught == 1){
-			  analysisManager->FillH1(51, geEdep);
+			  analysisManager->FillH1(51, geEdep);//neutron-IO
 			  if(geEdep>0){
 				analysisManager->FillH1(59, .5);
 			  }
+			}
+			if((uncaught == 1) && (mid1ScEdep < 2.*MeV)){
+			  analysisManager->FillH1(69, geEdep);//neutron-IOM
 			}
 		}else if(partName.compare(proton) == 0){
 		  analysisManager->FillH1(20, geEdep);
@@ -337,10 +351,11 @@ void B1EventAction::EndOfEventAction(const G4Event* event) //need event object n
 //		}
 //	}
 }
-
+}
+/*
 void B1EventAction::AddParticle(G4double partNum)
 {
 	partNumbers.push_back(partNum);
 }
-
+*/
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -92,7 +92,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4double zCoord = pos.getZ();
 	anMan->FillH1(30, zCoord);
   }
-
+/*
   //Fill uncaught within scints Hists
   G4string volume = step->GetTrack()->GetVolume()->GetName();
   G4string nextVolume = step->GetTrack()->GetNextVolume()->GetName();
@@ -177,7 +177,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 
   }
 
- 
+ */
   // check if we are in scoring volume
   if (volume != fScoringVolume) return;
 
@@ -188,47 +188,47 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 
 	if(partName.compare(neutron) == 0){
 	   anMan->FillH1(60, 0.5);
-	   fEventAction->AddParticle(0.5);
+	   //fEventAction->AddParticle(0.5);
 	}
 	if(partName.compare(proton) == 0){
 	   anMan->FillH1(60, 1.5);
-	   fEventAction->AddParticle(1.5);
+	   //fEventAction->AddParticle(1.5);
 	}
 	if(partName.compare(gamma) == 0){
 	   anMan->FillH1(60, 2.5);
-	   fEventAction->AddParticle(2.5);
+	   //fEventAction->AddParticle(2.5);
 	}
 	if(partName.compare(eNeg) == 0){
 	   anMan->FillH1(60, 3.5);
-	   fEventAction->AddParticle(3.5);
+	   //fEventAction->AddParticle(3.5);
 	}
 	if(partName.compare(ePos) == 0){
 	   anMan->FillH1(60, 4.5);
-	   fEventAction->AddParticle(4.5);
+	   //fEventAction->AddParticle(4.5);
 	}
 	if(partName.compare(muNeg) == 0){
 	   anMan->FillH1(60, 5.5);
-	   fEventAction->AddParticle(5.5);
+	   //fEventAction->AddParticle(5.5);
 	}
 	if(partName.compare(muPos) == 0){
 	   anMan->FillH1(60, 5.5);
-	   fEventAction->AddParticle(5.5);
+	   //fEventAction->AddParticle(5.5);
 	}
 	if(partName.compare(pion) == 0){
 	   anMan->FillH1(60, 6.5);
-	   fEventAction->AddParticle(6.5);
+	   //fEventAction->AddParticle(6.5);
 	}
 	if(partName.compare(kPos) == 0){
 	   anMan->FillH1(60, 7.5);
-	   fEventAction->AddParticle(7.5);
+	   //fEventAction->AddParticle(7.5);
 	}
 	if(partName.compare(kNeg) == 0){
 	   anMan->FillH1(60, 7.5);
-	   fEventAction->AddParticle(7.5);
+	   //fEventAction->AddParticle(7.5);
 	}
 	if(partName.compare(k0) == 0){
 	   anMan->FillH1(60, 0.5);
-	   fEventAction->AddParticle(7.5);
+	   //fEventAction->AddParticle(7.5);
 	}
 
   }

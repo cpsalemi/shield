@@ -142,6 +142,11 @@ B1RunAction::B1RunAction()
 	analysisManager->CreateH1("energyInOut", "Energy of Particles Uncaught Coming Through Out Scint", 1000, 0, 100*MeV);//64
 	analysisManager->CreateH1("partInIn", "Particle Types Uncaught Coming Through In Scint", 8, 0, 0);//65
 	analysisManager->CreateH1("energyInIn", "Energy of Particles Uncaught Coming Through In Scint", 1000, 0, 100*MeV);//66
+
+	//for testing with additional (mid) scint layers within cheap layers
+	analysisManager->CreateH1("G-IOM", "Ge Edep for events with no scint edep (I,O,M)", 1000, 0, 3*MeV);//67
+	analysisManager->CreateH1("bigG-IOM", "Ge Edep for events with no scint edep (I,O,M)",1000, 0, 30*MeV);//68
+	analysisManager->CreateH1("neutron-IOM", "Edep from neutrons with no scint edep (I,O,M)", 1000, 0, 100*MeV);//69
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

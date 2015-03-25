@@ -81,8 +81,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4double cuSize = env_sizeXY + 10*in;
   G4double pbSize = cuSize + 24*in;
   G4double inScintSize = pbSize + 4*in;
-  G4double cheapSize = inScintSize + 24*in;
-  G4double outScintSize = cheapSize + 4*in;
+  G4double cheap1Size = inScintSize + 12*in;
+  G4double mid1ScintSize = cheap1Size + 4*in;
+  G4double cheap2Size = mid1ScintSize + 12*in;
+  G4double outScintSize = cheap2Size + 4*in;
   G4double world_sizeXY = 10*m, world_sizeZ  = 10*m;
  
   G4ThreeVector center = G4ThreeVector(0,0, -3*m);
@@ -143,16 +145,34 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	OutScDetector->RegisterPrimitive(primitiveOut);
 	SetSensitiveDetector("outScint",OutScDetector);
 
-  //Cheap (steel)
+  //Cheap2 (steel)
   G4Material* steel = nist->FindOrBuildMaterial("G4_STAINLESS-STEEL");
-  G4Box* solidCheap = new G4Box("Cheap", 0.5*cheapSize, 0.5*cheapSize, 0.5*cheapSize);
-  G4LogicalVolume* logicCheap = new G4LogicalVolume(solidCheap, steel, "Cheap");
-  new G4PVPlacement(0, G4ThreeVector(), logicCheap, "Cheap", logicOutScint, false, 0, checkOverlaps);
+  G4Box* solidCheap2 = new G4Box("Cheap2", 0.5*cheap2Size, 0.5*cheap2Size, 0.5*cheap2Size);
+  G4LogicalVolume* logicCheap2 = new G4LogicalVolume(solidCheap2, steel, "Cheap2");
+  new G4PVPlacement(0, G4ThreeVector(), logicCheap2, "Cheap2", logicOutScint, false, 0, checkOverlaps);
+
+  //Mid1 Scint
+  G4Box* solidMid1Scint = new G4Box("mid1Scint", 0.5*mid1ScintSize, 0.5*mid1ScintSize, 0.5*mid1ScintSize);
+  G4LogicalVolume* logicMid1Scint = new G4LogicalVolume(solidMid1Scint, scint, "mid1Scint");
+  new G4PVPlacement(0, G4ThreeVector(), logicMid1Scint, "mid1Scint", logicCheap2, false, 0, checkOverlaps);
+	
+	//Scorer
+	G4MultiFunctionalDetector* Mid1ScDetector = new G4MultiFunctionalDetector("mid1Scint");
+
+	G4VPrimitiveScorer* primitiveMid1;
+	primitiveMid1 = new G4PSEnergyDeposit("Mid1Edep");
+	Mid1ScDetector->RegisterPrimitive(primitiveMid1);
+	SetSensitiveDetector("mid1Scint",Mid1ScDetector);
+
+  //Cheap1 (steel)
+  G4Box* solidCheap1 = new G4Box("Cheap1", 0.5*cheap1Size, 0.5*cheap1Size, 0.5*cheap1Size);
+  G4LogicalVolume* logicCheap1 = new G4LogicalVolume(solidCheap1, steel, "Cheap1");
+  new G4PVPlacement(0, G4ThreeVector(), logicCheap1, "Cheap1", logicMid1Scint, false, 0, checkOverlaps);
 
   //In Scint
   G4Box* solidInScint = new G4Box("inScint", 0.5*inScintSize, 0.5*inScintSize, 0.5*inScintSize);
   G4LogicalVolume* logicInScint = new G4LogicalVolume(solidInScint, scint, "inScint");
-  new G4PVPlacement(0, G4ThreeVector(), logicInScint, "inScint", logicCheap, false, 0, checkOverlaps);
+  new G4PVPlacement(0, G4ThreeVector(), logicInScint, "inScint", logicCheap1, false, 0, checkOverlaps);
 	
 	//Scorer
 	G4MultiFunctionalDetector* InScDetector = new G4MultiFunctionalDetector("inScint");
